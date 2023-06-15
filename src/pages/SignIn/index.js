@@ -29,7 +29,7 @@ const SignIn = ({navigation}) => {
         userRef = r(db, `User/${uid}`);
 
         // Show the success alert
-        alert('You are now logged in');
+        alert('Anda berhasil Login');
         // Delay the navigation to the appropriate home screen
         setTimeout(() => {
           navigation.navigate('HomeDonatur', {uid: uid});
@@ -100,15 +100,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   textInput: {
-    fontSize: 20,
+    fontSize: 17,
+    marginLeft:-15,
     fontWeight: 'bold',
   },
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 4,
+    fontSize:20,
+    height: 50,
+    margin: 0,
+    borderWidth: 1,
     borderColor: 'white',
-    padding: 10,
+    padding: 0,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,

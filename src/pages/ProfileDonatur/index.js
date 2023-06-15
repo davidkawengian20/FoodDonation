@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {ProfilePic} from '../../assets/images';
 import {Gap} from '../../components';
 import {
   ref as r,
@@ -15,8 +16,10 @@ import {
 const ProfileDonatur = ({navigation, route}) => {
   const db = getDatabase();
   const uid = route.params.uid;
+  const [nama, setNama] = useState('');
   const [nomor, setNomor] = useState('');
   const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
 
   const fetchUserDataRealtime = () => {
     const userRef = r(db, `User/${uid}`);
@@ -25,8 +28,10 @@ const ProfileDonatur = ({navigation, route}) => {
       snapshot => {
         if (snapshot.exists()) {
           const userData = snapshot.val();
+          setNama(userData.Nama);
           setNomor(userData.Nomor);
           setEmail(userData.Email);
+          setAddress(userData.Address);
         } else {
           console.log('No data available for the user.');
         }
@@ -45,13 +50,18 @@ const ProfileDonatur = ({navigation, route}) => {
     }
   }, [uid]);
   return (
+
+    
     <View style={styles.container}>
       <View style={styles.contentWrapper}>
         <View style={styles.logoWrapper}>
+        <Image source={ProfilePic} style={styles.profileImage} />
           <Gap height={20} />
-          <Text>Welcome Back</Text>
+          <Text>Hello</Text>
+          <Text style={styles.titleText}>{`${nama}`}</Text>
           <Text style={styles.titleText}>{`${nomor}`}</Text>
           <Text style={styles.titleText}>{`${email}`}</Text>
+          <Text style={styles.titleText}>{`${address}`}</Text>
         </View>
       </View>
     </View>
@@ -67,12 +77,13 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    backgroundColor: '#212A3E',
+    backgroundColor: '#FF961D',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 30,
     paddingTop: 26,
     marginTop: 24,
+    
   },
   logoWrapper: {
     justifyContent: 'center',
@@ -88,5 +99,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontSize: 20,
+  },
+  profileImage: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    top:-20,
   },
 });

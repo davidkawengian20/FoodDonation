@@ -5,5 +5,6 @@ import HomeDonatur from "./HomeDonatur";
 import HomeKurir from "./HomeKurir";
 import HomeAdmin from "./HomeAdmin";
 import ProfileDonatur from "./ProfileDonatur";
+import HalamanDonasi from "./HalamanDonasi"
 
-export {SplashScreen, SignIn, HomeDonatur, SignUp, HomeKurir, HomeAdmin, ProfileDonatur }
+export {SplashScreen, SignIn, HomeDonatur, SignUp, HomeKurir, HomeAdmin, ProfileDonatur, HalamanDonasi }

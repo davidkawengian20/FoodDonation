@@ -6,23 +6,30 @@ import { donatelogo, Akun, home1, bgdonatur, home1r } from '../../assets'
 const HomeDonatur = ({navigation, route}) => {
   {//const uid = route.params.uid;
   }
+  const uid = route.params.uid;
   const list = () => {
-    navigation.navigate ('HomeAdmin')
+    navigation.navigate ('HalamanDonasi')
   }
   const akun = () => {
     navigation.navigate('ProfileDonatur')
         {//navigation.navigate('ProfileDonatur', {uid: uid})
         }
+        navigation.navigate('ProfileDonatur', {uid: uid})
   }
   
   return (
     <View style={styles.container}>
       <Text style={styles.test1}>Want to Share Food?</Text>
       <Text style={styles.fd}>Food Donation</Text>
-      <Text style={styles.donattxt}>Donasi</Text>
-      <Text style={styles.donatket}>Donasi</Text>
-      <Text style={styles.akuntxt}>Akun</Text>
-      <Text style={styles.akunket}>Donasi</Text>
+      
+      <Text style={{position:'absolute', color:'#000000',top: 430, left: 92, fontSize:20 ,}}>Donasi</Text>
+      <Text style={{position: 'absolute', color:'#B7B7B7', top: 455,left: 70,}}>donasi sekarang </Text>
+      <Text style={{position: 'absolute', color:'#B7B7B7', top: 470,left: 65,}}>untuk orang butuh </Text>
+      <Text style={{position: 'absolute', color:'#B7B7B7', top: 485,left: 95,}}>makan</Text>
+
+      <Text style={{position: 'absolute', color:'#000000',top: 430, left: 245, fontSize:20 ,}}>Akun</Text>
+      <Text style={{position: 'absolute', color:'#B7B7B7', top: 455,left: 210,}}>cek profil informasi</Text>
+      <Text style={{position: 'absolute', color:'#B7B7B7', top: 470,left: 226,}}>tentang Anda</Text>
 
       <TouchableOpacity onPress={list}>
       <Image source={donatelogo} style={styles.list} />
@@ -36,7 +43,6 @@ const HomeDonatur = ({navigation, route}) => {
       
       <Image source={home1} style={styles.Home}/>
        
-      
       <View style={styles.bgtambahan}/>
       <Text style={styles.texttmbh}>Seseorang butuhkan makanan</Text>
     </View>
@@ -56,6 +62,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 318,
     left: 70,
+    
   },
     akun: {
     width: 125,
@@ -109,11 +116,5 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     top:785,
   },
-  donattxt:{
-    position:'absolute',
-    color:'black',
-    fontSize:20,
-    top: 500,
-    left: 95,
-  }
+
 })

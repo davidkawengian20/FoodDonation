@@ -8,6 +8,7 @@ import {
   HomeKurir,
   HomeAdmin,
   ProfileDonatur,
+  HalamanDonasi
 } from '../pages';
 
 const Stack = createNativeStackNavigator();
@@ -16,8 +17,9 @@ const index = () => {
   return (
     <Stack.Navigator>
     
-    
-      {/* <Stack.Screen
+      
+
+      <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
         options={{headerShown: false}}
@@ -26,7 +28,7 @@ const index = () => {
         name="SignIn"
         component={SignIn}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="HomeDonatur"
         component={HomeDonatur}
@@ -50,6 +52,11 @@ const index = () => {
       <Stack.Screen
         name="SignUp"
         component={SignUp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="HalamanDonasi"
+        component={HalamanDonasi}
         options={{headerShown: false}}
       />
       

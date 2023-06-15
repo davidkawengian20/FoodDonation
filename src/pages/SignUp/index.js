@@ -7,6 +7,7 @@ import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {ref as r, getDatabase, child, get, update} from 'firebase/database';
 
 const SignUp = ({navigation}) => {
+  const [nama, setNama] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
@@ -17,6 +18,7 @@ const SignUp = ({navigation}) => {
       .then(re => {
         console.log(re);
         update(r(db, `User/${authentication.currentUser.uid}`), {
+          Nama :nama,
           Email: email,
           Address: address,
           Nomor:Nomor
@@ -38,6 +40,7 @@ const SignUp = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image source={Backgrounds} style={styles.backgroundImage} />
+      
       <TouchableOpacity onPress={goSignIn}>
         <Image source={Close} style={styles.closeImage} />
       </TouchableOpacity>
@@ -62,6 +65,17 @@ const SignUp = ({navigation}) => {
             secureTextEntry={true}
           />
         </View>
+
+        <Gap height={20} />
+        <View style={styles.inputRow}>
+          <Text style={styles.textInput}>username(RM. )</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setNama}
+            value={nama}
+          />
+        </View>
+
         <Gap height={20} />
         <View style={styles.inputRow}>
           <Text style={styles.textInput}>Address</Text>
@@ -72,22 +86,25 @@ const SignUp = ({navigation}) => {
           />
           <Gap height={20} />
         <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Nomor</Text>
+          <Text style={styles.textInput}>Nomor(tlpn/WA)</Text>
           <TextInput
             style={styles.input}
             onChangeText={setNomor}
             value={Nomor}
           />
+
+          
+
         </View>
         </View>
-        <Gap height={20} />
+        <Gap height={10} />
         <View style={styles.inputRow}>
           <Text style={styles.textInput}>Foto</Text>
-          <Gap height={20} />
+          <Gap height={5} />
           <Image source={UploadRegis} style={styles.uploadStyle} />
         </View>
-        <Gap height={30} />
-        <Button title="Register" color="#F7941D" textColor="white" onPress={handleSignUp}/>
+        <Gap height={20} />
+        <Button title="Register" color="#F7941D" textColor="white" onPress={handleSignUp} />
       </View>
     </SafeAreaView>
   );
@@ -114,27 +131,35 @@ const styles = StyleSheet.create({
   profileImage: {
     justifyContent: 'center',
     alignSelf: 'center',
+    top:-20,
   },
   inputContainer: {
     height: '70%',
     width: '80%',
     paddingHorizontal: 10,
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    top:-15
   },
   textInput: {
+    marginLeft:-15,
     fontSize: 20,
+    padding:-10,
     fontWeight: 'bold',
+    top:-15
   },
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 4,
+    fontSize:20,
+    height: 30,
+    margin: 0,
+    borderWidth: 1,
     borderColor: 'white',
-    padding: 10,
+    padding: 0,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
+    top:-15
+    
   },
   uploadStyle:{
     marginLeft: 10
