@@ -2,6 +2,8 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ProfilePic} from '../../assets/images';
 import {Gap} from '../../components';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   ref as r,
   onValue,
@@ -53,16 +55,35 @@ const ProfileDonatur = ({navigation, route}) => {
 
     
     <View style={styles.container}>
+     <Icon name="md-chevron-back-sharp" size={50} color="#fff" />
+    <Text style={{textAlign:'center',fontWeight:'bold', fontSize:20, color:'#fff'}}>Profile</Text>
       <View style={styles.contentWrapper}>
-        <View style={styles.logoWrapper}>
-        <Image source={ProfilePic} style={styles.profileImage} />
-          <Gap height={20} />
-          <Text>Hello</Text>
+      <View style={styles.iconContainer}>
+                <Icon name="person-circle-outline" size={150} color="#FF961D" />
+            </View>
+          <View style={styles.contentcontainer}>
+
+          <Text style={styles.ketItem}>Nama Rumah makan </Text>
+          <View style={styles.menuContainer}>
           <Text style={styles.titleText}>{`${nama}`}</Text>
-          <Text style={styles.titleText}>{`${nomor}`}</Text>
-          <Text style={styles.titleText}>{`${email}`}</Text>
+          </View>
+
+          <Text style={styles.ketItem}>Alamat</Text>
+          <View style={styles.menuContainer}>
           <Text style={styles.titleText}>{`${address}`}</Text>
-        </View>
+          </View>
+
+          <Text style={styles.ketItem}>Nomor Tlpn/WA</Text>
+          <View style={styles.menuContainer}>
+          <Text style={styles.titleText}>{`${nomor}`}</Text>
+          </View>
+
+          <Text style={styles.ketItem}>email</Text>
+          <View style={styles.menuContainer}>
+          <Text style={styles.titleText}>{`${email}`}</Text>
+          </View>
+          </View>
+        
       </View>
     </View>
   );
@@ -73,23 +94,30 @@ export default ProfileDonatur;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D2CECE',
+    backgroundColor: '#FF961D',
   },
+  iconContainer: {
+        marginBottom: 20,
+        marginTop: 20,
+        alignItems:'center'
+    },
   contentWrapper: {
     flex: 1,
-    backgroundColor: '#FF961D',
+    backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 30,
-    paddingTop: 26,
-    marginTop: 24,
+    paddingTop: 0,
+    marginTop: 20,
     
   },
   logoWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 200,
-    marginTop: 140,
+    height: '100%',
+    width:'100%',
+    marginTop: 50,
+    backgroundColor:'red'
   },
   logo: {
     height: '70%',
@@ -97,12 +125,31 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontWeight: 'bold',
-    color: 'white',
+    color: 'orange',
     fontSize: 20,
+    paddingLeft:30,
+    paddingVertical:5
   },
-  profileImage: {
+  menuContainer:{
+    width: '100%',
+    height: 60,
+    margin:0,
+    backgroundColor: 'white',
+    borderRadius: 10,
     justifyContent: 'center',
-    alignSelf: 'center',
-    top:-20,
-  },
+    marginVertical: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    },
+    ketItem:{
+      color:'#B7B7B7',
+      paddingLeft:10 ,
+      paddingTop:15
+    },
 });

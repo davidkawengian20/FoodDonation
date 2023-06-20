@@ -16,10 +16,18 @@ const Stack = createNativeStackNavigator();
 const index = () => {
   return (
     <Stack.Navigator>
-    
-      
 
-      <Stack.Screen
+    <Stack.Screen
+        name="HalamanDonasi"
+        component={HalamanDonasi}
+        options={{headerShown: false}}
+      />
+    <Stack.Screen
+        name="HomeKurir"
+        component={HomeKurir}
+        options={{headerShown: false}}
+      />
+    <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
         options={{headerShown: false}}
@@ -29,16 +37,20 @@ const index = () => {
         component={SignIn}
         options={{headerShown: false}}
       />
+
+    <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{headerShown: false}}
+      />
+    
+    
       <Stack.Screen
         name="HomeDonatur"
         component={HomeDonatur}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="HomeKurir"
-        component={HomeKurir}
-        options={{headerShown: false}}
-      />
+      
       <Stack.Screen
         name="HomeAdmin"
         component={HomeAdmin}
@@ -49,16 +61,8 @@ const index = () => {
         component={ProfileDonatur}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="HalamanDonasi"
-        component={HalamanDonasi}
-        options={{headerShown: false}}
-      />
+      
+      
       
     </Stack.Navigator>
   );

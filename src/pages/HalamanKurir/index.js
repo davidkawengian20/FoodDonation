@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const HomeAdmin = () => {
+const HalamanKurir = () => {
   return (
     <View>
-      <Text>HomeAdmin</Text>
+      <Text>HalamanKurir</Text>
     </View>
   )
 }
 
-export default HomeAdmin
+export default HalamanKurir
 
 const styles = StyleSheet.create({})

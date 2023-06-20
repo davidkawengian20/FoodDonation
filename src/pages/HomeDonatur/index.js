@@ -1,120 +1,190 @@
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { donatelogo, Akun, home1, bgdonatur, home1r } from '../../assets'
-
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, BackHandler, ImageBackground, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigationState } from '@react-navigation/native'
+import { home1, } from '../../assets'  
+import {
+  ref as r,
+  onValue,
+  off,
+  getDatabase,
+  child,
+  get,
+  update,
+  set,
+} from 'firebase/database';
 
 const HomeDonatur = ({navigation, route}) => {
-  {//const uid = route.params.uid;
-  }
+  const db = getDatabase();
   const uid = route.params.uid;
+  const [nama, setNama] = useState('');
+  
+  const fetchUserDataRealtime = () => {
+    const userRef = r(db, `User/${uid}`);
+    const onValueChange = onValue(
+      userRef,
+      snapshot => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          setNama(userData.Nama);
+          } else {
+          console.log('No data available for the user.');
+        }
+      },
+      error => {
+        console.error('Error fetching user data:', error);
+      },
+    );
+    
+    // Cleanup function to remove the listener when the component is unmounted
+    return () => off(userRef, 'value', onValueChange);
+  };
+  useEffect(() => {
+    if (uid) {
+      fetchUserDataRealtime();
+    }
+  }, [uid]);
+
   const list = () => {
-    navigation.navigate ('HalamanDonasi')
+    navigation.navigate ('HomeAdmin')
   }
   const akun = () => {
     navigation.navigate('ProfileDonatur')
-        {//navigation.navigate('ProfileDonatur', {uid: uid})
+        {navigation.navigate('ProfileDonatur', {uid: uid})
         }
-        navigation.navigate('ProfileDonatur', {uid: uid})
+        
+  }
+  const home = () => {
+    navigation.navigate ('HalamanDonatur')
   }
   
   return (
     <View style={styles.container}>
-      <Text style={styles.test1}>Want to Share Food?</Text>
-      <Text style={styles.fd}>Food Donation</Text>
+      {/* header */}
+      <View style={styles.headercontainer}>
+      <Text style={{}}>Slamat Datang</Text>
+      <Text style={styles.headerText}>{`${nama}`}</Text>
+      </View>
       
-      <Text style={{position:'absolute', color:'#000000',top: 430, left: 92, fontSize:20 ,}}>Donasi</Text>
-      <Text style={{position: 'absolute', color:'#B7B7B7', top: 455,left: 70,}}>donasi sekarang </Text>
-      <Text style={{position: 'absolute', color:'#B7B7B7', top: 470,left: 65,}}>untuk orang butuh </Text>
-      <Text style={{position: 'absolute', color:'#B7B7B7', top: 485,left: 95,}}>makan</Text>
+      <Text style={{textAlign:'center',color:'black',color:'#000', fontSize:25,  alignSelf:'center', paddingBottom:0, paddingTop:10}}>Want to Share Food?</Text>
+    
+        <Text style={{textAlign:'center', paddingBottom:30, color:'#B7B7B7', paddingHorizontal:50}}>
+          Mari berdonasi untuk membantu orang yang membutuhkan makanan diKelurahan Airmadidi Atas 
+        </Text>
+      <View style={styles.content}>
+      <View style={styles.menuContainer}>
+      <TouchableOpacity style={styles.menuItem} onPress={home} >
+          <Icon name="fast-food" size={40} color="#FF961D"/>
+          <Text style={styles.menuItemText}>Donation</Text>
+        </TouchableOpacity>
+        <Text style={styles.menuItemKet}>menu untuk melakukan donasi</Text>
+        </View>
 
-      <Text style={{position: 'absolute', color:'#000000',top: 430, left: 245, fontSize:20 ,}}>Akun</Text>
-      <Text style={{position: 'absolute', color:'#B7B7B7', top: 455,left: 210,}}>cek profil informasi</Text>
-      <Text style={{position: 'absolute', color:'#B7B7B7', top: 470,left: 226,}}>tentang Anda</Text>
+        <View style={styles.menuContainer}>
+        <TouchableOpacity title style={styles.menuItem} onPress={akun} >
+          <MaterialCommunityIcons name="account-circle" size={40} color="#FC6E51" />
+          <Text style={styles.menuItemText}>Profile</Text>
+        </TouchableOpacity>
+        <Text style={styles.menuItemKet}>menu untuk melihat profil pribadi</Text>
+          </View>
+          
+        <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menuItem} onPress={list} >
+          <MaterialCommunityIcons name="onepassword" size={40} color="#FC6E51" />
+          <Text style={styles.menuItemText}>Change Password</Text>
+        </TouchableOpacity>
+        <Text style={styles.menuItemKet}>menu untuk anda mengubah password</Text>
+          </View>
+          
 
-      <TouchableOpacity onPress={list}>
-      <Image source={donatelogo} style={styles.list} />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={akun}>
-      <Image source={Akun} style={styles.akun}/>
-      </TouchableOpacity>
-
-      <Image source={bgdonatur} style={styles.bgDonatur}/>
-      
-      <Image source={home1} style={styles.Home}/>
-       
-      <View style={styles.bgtambahan}/>
-      <Text style={styles.texttmbh}>Seseorang butuhkan makanan</Text>
-    </View>
+        <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menuItem} onPress={list} >
+          <MaterialCommunityIcons name="location-exit" size={40} color="#FC6E51" />
+          <Text style={styles.menuItemText}>Exit</Text>
+        </TouchableOpacity>
+        <Text style={styles.menuItemKet}>menu untuk keluar halaman dan kembali ke login</Text>
+        </View>       
+        </View>
+        
+      </View>
   )
 }
 
 export default HomeDonatur
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:'#fff'
+    container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  list: {
-    width: 107.48,
-    height: 100,
-    position: 'absolute',
-    top: 318,
-    left: 70,
+  headercontainer: {
+    backgroundColor: '#FF961D',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginBottom: 10,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+  },
+  
+  headerText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign:'left',
     
   },
-    akun: {
-    width: 125,
-    height: 118,
-    position: 'absolute',
-    top: 311,
-    left: 200,
-  },
-  test1:{
-    color:'#000',
-    fontSize:25,
-    position:'absolute',
-    top:200,
-    alignSelf:'center',
-    fontFamily:'arial'
-  },
-  fd:{
-    fontFamily:'arial',
-    height:97,
-    height:21,
-    color:'#F79327',
-    position:'absolute',
-    alignSelf:'center',
-    top:130
-  },
-  Home: {
-    width:153,
-    height:131,
-    position:'absolute',
-    top:10,
+  menuItem: {
+    width: '100%',
+    height: 105,
+    margin:0,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    },
+  menuItemText: {
+      color: '#05375a',
+      marginTop: 10,
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+  menuItemKet: {
+    color:'#B7B7B7',
+    textAlign:'center',
+    marginHorizontal:0,
+    
     alignSelf:'center'
+
   },
-  bgDonatur: {
-    position:'absolute',
-    flex:1,
-    alignSelf:'center',
-    top:545,
-    width:395,
-    height:235
+  content: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginHorizontal: 60,
+    marginTop: 0,
+    },
+    menuContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '40%',
+    marginBottom: 10,
+    paddingBottom:20
   },
-  bgtambahan: {
-    position:'absolute',
-    backgroundColor:'#FF961D',
-    top:780,
-    width:395,
-    height:40
-  },
-  texttmbh:{
-    color:'#fff',
-    position:'absolute',
-    alignSelf:'center',
-    top:785,
-  },
+
 
 })
