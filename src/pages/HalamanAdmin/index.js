@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView,TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Gap, Button} from '../../components';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //  menambahkan async / await syntax pada method fetch yang digunakan untuk mengambil data dari API
 
-class HalamanKurir extends Component {
+class HalamanAdmin extends Component {
+          
     // constructor(props) {
     //     super(props);
 
@@ -137,26 +140,24 @@ class HalamanKurir extends Component {
                   <Text style={styles.tableCellLeft}>ket tambahan</Text>
                   <Text style={styles.tableCellRight}>saus sudah dicampur</Text>
                 </View>
-                 
-                 <View style={styles.headerCard} >
-                  <Text style={styles.itemName}>Kel. David</Text>
-                  <TouchableOpacity style={styles.IconViewClass} >
-                    <MaterialIcons name="location-pin" size={24} color="black" />
-                  </TouchableOpacity>
-                </View>
-                  <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Koordinat Latitude</Text>
-                  <Text style={styles.tableCellRight}>1.4170439607651206</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Koordinat Longitude</Text>
-                  <Text style={styles.tableCellRight}>124.98343815049607</Text>
-                </View>
+                 <Gap height={20} />
+        <View style={styles.inputRow}>
+          <Text style={{color:'black',}}>Target Donasi</Text>
+          <MaterialCommunityIcons name="target-account" color="black" size={20} style={{textAlign:'right'}} />
+          <TextInput
+          placeholder="12abcxx"
+            style={styles.input}
+            // onChangeText={setNewPass}
+            // value={newPass}
+            
+          />
+        </View>
                  <View style={styles.headerCard}backgroundColor=''textAlign='center' paddingTop={20} >
                   <TouchableOpacity  >
-                    <Text style={styles.itemName} >Check Location</Text>
+                    <Text style={styles.itemName} >Confirm</Text>
                   </TouchableOpacity>
                 </View>
+
               </View>
             </TouchableOpacity>
           {/* ))} */}
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   header: {
-    backgroundColor: '#176B87',
+    backgroundColor: '#F86F03',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -201,6 +202,19 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+  },
+  input: {
+    fontSize:20,
+    height: 30,
+    margin: 0,
+    borderWidth: 1,
+    color:'black',
+    borderColor: 'black',
+    padding: 0,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    top:-15
   },
   headerText: {
     fontSize: 20,
@@ -220,7 +234,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 1,
-    
   },
   tableCellLeft: {
     color: '#05375a',
@@ -308,4 +321,4 @@ const styles = StyleSheet.create({
     },
 });
     
-    export default HalamanKurir;
+    export default HalamanAdmin;

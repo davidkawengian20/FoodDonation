@@ -4,24 +4,32 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigationState } from '@react-navigation/native'
 import { home1, } from '../../assets'  
-import {
-  ref as r,
-  onValue,
-  off,
-  getDatabase,
-  child,
-  get,
-  update,
-  set,
-} from 'firebase/database';
+// import {
+//   ref as r,
+//   onValue,
+//   off,
+//   getDatabase,
+//   child,
+//   get,
+//   update,
+//   set,
+// } from 'firebase/database';
 
-const HomeDonatur = ({navigation, route}) => {
-  const db = getDatabase();
-  const uid = route.params.uid;
+const HomeDonatur = ({navigation, route }) => {
+  // cara mendapatkan data dari parameter
+  const {jsonData} = route.params;
+
+  console.log("sekarang ada di Home Donatur");
+  console.log(jsonData);
+  
+  
+
+  // const db = getDatabase();
+  // const uid = route.params.uid;
   const [nama, setNama] = useState('');
   
   const fetchUserDataRealtime = () => {
-    const userRef = r(db, `User/${uid}`);
+    // const userRef = r(db, `User/${uid}`);
     const onValueChange = onValue(
       userRef,
       snapshot => {
@@ -40,23 +48,30 @@ const HomeDonatur = ({navigation, route}) => {
     // Cleanup function to remove the listener when the component is unmounted
     return () => off(userRef, 'value', onValueChange);
   };
-  useEffect(() => {
-    if (uid) {
-      fetchUserDataRealtime();
-    }
-  }, [uid]);
+  // useEffect(() => {
+  //   if (uid) {
+  //     fetchUserDataRealtime();
+  //   }
+  // }, [uid]);
 
   const list = () => {
     navigation.navigate ('HomeAdmin')
   }
+  const signIn = () => {
+    navigation.navigate ('SignIn')
+  }
+  const ChangePassword = () => {
+    navigation.navigate ('ChangePassword')
+  }
   const akun = () => {
-    navigation.navigate('ProfileDonatur')
-        {navigation.navigate('ProfileDonatur', {uid: uid})
-        }
+    navigation.navigate('ProfileDonatur',{jsonData: jsonData})
+
+        // {navigation.navigate('ProfileDonatur', {uid: uid})
+        // }
         
   }
   const home = () => {
-    navigation.navigate ('HalamanDonatur')
+    navigation.navigate ('HalamanDonasi')
   }
   
   return (
@@ -64,7 +79,8 @@ const HomeDonatur = ({navigation, route}) => {
       {/* header */}
       <View style={styles.headercontainer}>
       <Text style={{}}>Slamat Datang</Text>
-      <Text style={styles.headerText}>{`${nama}`}</Text>
+      {/* <Text style={styles.headerText}>{`${nama}`}</Text> */}
+      <Text style={styles.headerText}>rmpisgor</Text>
       </View>
       
       <Text style={{textAlign:'center',color:'black',color:'#000', fontSize:25,  alignSelf:'center', paddingBottom:0, paddingTop:10}}>Want to Share Food?</Text>
@@ -80,7 +96,6 @@ const HomeDonatur = ({navigation, route}) => {
         </TouchableOpacity>
         <Text style={styles.menuItemKet}>menu untuk melakukan donasi</Text>
         </View>
-
         <View style={styles.menuContainer}>
         <TouchableOpacity title style={styles.menuItem} onPress={akun} >
           <MaterialCommunityIcons name="account-circle" size={40} color="#FC6E51" />
@@ -88,9 +103,8 @@ const HomeDonatur = ({navigation, route}) => {
         </TouchableOpacity>
         <Text style={styles.menuItemKet}>menu untuk melihat profil pribadi</Text>
           </View>
-          
         <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem} onPress={list} >
+        <TouchableOpacity style={styles.menuItem} onPress={ChangePassword} >
           <MaterialCommunityIcons name="onepassword" size={40} color="#FC6E51" />
           <Text style={styles.menuItemText}>Change Password</Text>
         </TouchableOpacity>
@@ -99,7 +113,7 @@ const HomeDonatur = ({navigation, route}) => {
           
 
         <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem} onPress={list} >
+        <TouchableOpacity style={styles.menuItem} onPress={signIn} >
           <MaterialCommunityIcons name="location-exit" size={40} color="#FC6E51" />
           <Text style={styles.menuItemText}>Exit</Text>
         </TouchableOpacity>

@@ -1,155 +1,172 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {ProfilePic} from '../../assets/images';
-import {Gap} from '../../components';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  ref as r,
-  onValue,
-  off,
-  getDatabase,
-  child,
-  get,
-  update,
-  set,
-} from 'firebase/database';
 
-const ProfileDonatur = ({navigation, route}) => {
-  const db = getDatabase();
-  const uid = route.params.uid;
-  const [nama, setNama] = useState('');
-  const [nomor, setNomor] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+//  menambahkan async / await syntax pada method fetch yang digunakan untuk mengambil data dari API
 
-  const fetchUserDataRealtime = () => {
-    const userRef = r(db, `User/${uid}`);
-    const onValueChange = onValue(
-      userRef,
-      snapshot => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          setNama(userData.Nama);
-          setNomor(userData.Nomor);
-          setEmail(userData.Email);
-          setAddress(userData.Address);
-        } else {
-          console.log('No data available for the user.');
-        }
-      },
-      error => {
-        console.error('Error fetching user data:', error);
-      },
-    );
+class ProfileDonatur extends Component {
+    constructor(props) {
+        super(props);
 
-    // Cleanup function to remove the listener when the component is unmounted
-    return () => off(userRef, 'value', onValueChange);
-  };
-  useEffect(() => {
-    if (uid) {
-      fetchUserDataRealtime();
+        // cara mendapatkan data dari paramenter
+        const { jsonData } = this.props.route.params;
+
+        console.log("sekarang ada di Profile Donatur");
+
+        console.log(jsonData);
+
+        // Menyimpan data di dalam state
+        this.state = {
+          jsonData: jsonData
+        };
+        console.log("email: "+jsonData[0].email);
     }
-  }, [uid]);
-  return (
 
+  renderHeader() {
     
-    <View style={styles.container}>
-     <Icon name="md-chevron-back-sharp" size={50} color="#fff" />
-    <Text style={{textAlign:'center',fontWeight:'bold', fontSize:20, color:'#fff'}}>Profile</Text>
-      <View style={styles.contentWrapper}>
-      <View style={styles.iconContainer}>
-                <Icon name="person-circle-outline" size={150} color="#FF961D" />
-            </View>
-          <View style={styles.contentcontainer}>
-
-          <Text style={styles.ketItem}>Nama Rumah makan </Text>
-          <View style={styles.menuContainer}>
-          <Text style={styles.titleText}>{`${nama}`}</Text>
-          </View>
-
-          <Text style={styles.ketItem}>Alamat</Text>
-          <View style={styles.menuContainer}>
-          <Text style={styles.titleText}>{`${address}`}</Text>
-          </View>
-
-          <Text style={styles.ketItem}>Nomor Tlpn/WA</Text>
-          <View style={styles.menuContainer}>
-          <Text style={styles.titleText}>{`${nomor}`}</Text>
-          </View>
-
-          <Text style={styles.ketItem}>email</Text>
-          <View style={styles.menuContainer}>
-          <Text style={styles.titleText}>{`${email}`}</Text>
-          </View>
-          </View>
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Profile Donatur</Text>
+        <TouchableOpacity style={styles.notificationIcon} onPress={()=>this.props.navigation.navigate('HomeScreen', { jsonData: this.state.jsonData })} >
+            <Icon name="ios-home" size={24} color="white" />
+        </TouchableOpacity>
         
       </View>
-    </View>
-  );
-};
+    );
+  }
 
-export default ProfileDonatur;
+
+  renderContent() {
+    //console.log("Data Classes2:");
+    //console.log(this.state.jsonClasses);
+    
+    return (
+        <View style={styles.containerprofile}>
+            <View style={styles.iconContainer}>
+                <Icon name="person-circle-outline" size={200} color="#555" />
+            </View>
+            <Text style={styles.text}>Hello!!</Text>
+            <View style={styles.textinputcontainer}>
+            <Text style={styles.textdata}>{this.state.jsonData[0].username}</Text>
+            </View>
+            <Text style={styles.text}>Email</Text>
+            <View style={styles.textinputcontainer}>
+            <Text style={styles.textdata}>{this.state.jsonData[0].email}</Text>
+            </View>
+            <Text style={styles.text}>Alamat</Text>
+            <View style={styles.textinputcontainer}>
+            <Text style={styles.textdata}>{this.state.jsonData[0].address}</Text>
+            </View>
+            <Text style={styles.text}>Nomor (tlpn/WA)</Text>
+            <View style={styles.textinputcontainer}>
+            <Text style={styles.textdata}>{this.state.jsonData[0].nomor}</Text>
+            </View>
+        </View>
+    );
+  }
+
+  renderFooter() {
+    return (
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>2023 © Unklab</Text>
+      </View>
+    );
+  }
+
+  render() {
+    
+    return (
+      <View style={styles.container}>
+        {this.renderHeader()}
+        {this.renderContent()}
+        {this.renderFooter()}
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF961D',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
-  iconContainer: {
-        marginBottom: 20,
-        marginTop: 20,
-        alignItems:'center'
-    },
-  contentWrapper: {
-    flex: 1,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingHorizontal: 30,
-    paddingTop: 0,
-    marginTop: 20,
+  textinputcontainer:{
     
   },
-  logoWrapper: {
-    justifyContent: 'center',
+  header: {
+    backgroundColor: '#85A389',
+    flexDirection: 'row',
     alignItems: 'center',
-    height: '100%',
-    width:'100%',
-    marginTop: 50,
-    backgroundColor:'red'
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 15,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
-  logo: {
-    height: '70%',
-    width: '70%',
-  },
-  titleText: {
-    fontWeight: 'bold',
-    color: 'orange',
+  headerText: {
     fontSize: 20,
-    paddingLeft:30,
-    paddingVertical:5
+    color: '#fff',
+    fontWeight: 'bold',
   },
-  menuContainer:{
-    width: '100%',
-    height: 60,
-    margin:0,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    justifyContent: 'center',
-    marginVertical: 10,
-    shadowColor: 'black',
-    shadowOffset: {
-    width: 0,
-    height: 2,
+
+  footer: {
+    height:25,
+    alignItems: 'center',
+    justifyContent: 'flex-start', // on top
+    //backgroundColor: '#2c3e50',
+    //justifyContent: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+
+  footerText: {
+      fontSize: 16,
+      //color: '#fff',
+      color: 'gray',
+  },
+  notificationIcon: {
+        position: 'relative',
+        position: 'absolute',
+        right: 20,
+        top: 17,
+
+    },containerprofile: {
+        flex: 1,
+        
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        backgroundColor: '#fff',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        marginTop:30,
+        backgroundColor:'#fff',
+        
+        
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+      iconContainer: {
+        marginBottom: 20,
+        marginTop: 20,
+        backgroundColor:'#fff',
+        alignItems:'center'
     },
-    ketItem:{
-      color:'#B7B7B7',
-      paddingLeft:10 ,
-      paddingTop:15
-    },
-});
+      text: {
+        fontSize: 18,
+        color: '#05375a',
+        fontWeight: 'bold',
+        marginBottom: 5,
+        marginLeft:20
+      },
+      textdata: {
+        fontSize: 16,
+        color: '#05375a',
+        //fontWeight: 'bold',
+        marginBottom: 20,
+        marginLeft:30,
+        fontSize:20
+      },
+      
+}); 
+    
+    export default ProfileDonatur;

@@ -10,43 +10,120 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import SignIn from '../SignIn';
 
 const SignUp = ({navigation}) => {
-  const [nama, setNama] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const [Nomor, setNomor] = useState('');
-
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(authentication, email, password)
-      .then(re => {
-        console.log(re);
-        update(r(db, `User/${authentication.currentUser.uid}`), {
-          Nama :nama,
-          Email: email,
-          Address: address,
-          Nomor:Nomor
-        });
-        Alert.alert('Success!', 'You are now registered');
-        setTimeout(() => {
-          navigation.navigate('SignIn');
-        }, 2000); // Add a 2-second (2000 milliseconds) delay before navigating
-      })
-      .catch(error => {
-        Alert.alert('Alert!', error.message);
-        console.log('Error:', error.message);
-      });
-  }
-  
-  const goSignIn = () => {
-    navigation.navigate('SignIn');
+     const SignIn = () => {
+      navigation.navigate('SignIn');
   } 
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [nomor, setNomor] = useState('');
+    const [password, setPassword] = useState('');
+    const [repassword, setRePassword] = useState('');
+    
+    const handleCreateAccount = () => {
+        // check if input fields are not empty or only spaces
+        if (!name.trim() || !email.trim() || !address.trim() || !nomor.trim() || !password.trim() || !repassword.trim()) {
+          Alert.alert('Empty Input Field', 'Check again, all fields cannot be empty or contain only spaces.');
+          return;
+        }
+        
+        // check if email format is valid
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Alert.alert('Error Message', 'Invalid email format.');
+            return;
+        }
+        if (password !== repassword) {
+            Alert.alert('Student Password', 'Please re-type the same password.');
+            return;
+        }
+      
+        if (password !== repassword) {
+            Alert.alert('Student Password', 'Passwords do not match. Please enter the same password in both fields.');
+            return;
+        } 
+          
+        if (password.length < 8 || repassword.length < 8) {
+            Alert.alert('Student Password', 'Password length must be at least 8 characters.');
+            return;
+        }
+          
+        // create request body with email and password input values
+        const requestBody = {
+          'input-email': email,
+          'input-password': password,
+          'input-username': name,
+          'input-address': address,
+          'input-nomor': nomor,
+        };
+
+        // Time out request data
+        const timeoutPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error('Request timed out.'));
+          }, 5000); // 5000 (5 detik)
+        });
+    
+        Promise.race([
+          fetch('http://103.31.38.183/foodDonation/public/mobile/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: Object.keys(requestBody).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(requestBody[key])}`).join('&')
+          }),
+          timeoutPromise
+        ])
+          .then(response => response.text())
+          .then(textData => {
+            // handle response data
+            console.log(textData);
+    
+            // check if textData contains "ERROR"
+            if (textData.includes("ERROR")) {
+              // handle error case
+              //console.error("Login failed:", textData);
+              Alert.alert('Error Message', 'Sorry, create new account failed. Please try again.');
+              return;
+            }
+            
+            // check if textData contains "INCORRECT"
+            if (textData.includes("DUPLICATE")) {
+              // handle INCORRECT case
+              Alert.alert('Error Message', 'Sorry, duplicate email/nim/reg.number were found in database. Please contact the administrator.');
+              return;
+            }
+            
+            if (textData.includes("SUCCESS")) {
+              // message
+              Alert.alert('User Account', 'New account of the student was created successfully.');
+              navigation.navigate('SignIn');
+              
+              // Set empty field
+              setName('');
+              setEmail('');
+              setAddress('');
+              setNomor('');
+              setPassword('');
+              setRePassword('');
+            }
+          })
+          .catch(error => {
+            //console.error(error);
+            Alert.alert('Error Message', error.message);
+            return;
+          });
+    }
+
   return (
     <SafeAreaView style={styles.container}>
       <Image source={Backgrounds} style={styles.backgroundImage} />
       
-      <TouchableOpacity onPress={goSignIn}>
+      <TouchableOpacity onPress={SignIn}>
         <MaterialCommunityIcons name="close-box-outline" color="black" size={30} style={{padding:20, textAlign:'right'}} />
       </TouchableOpacity>
       <EvilIcons name="user" color="#025464" size={120} style={{alignSelf:'center'}} />
@@ -61,7 +138,8 @@ const SignUp = ({navigation}) => {
             onChangeText={setEmail}
             value={email}
             caretColor="red"
-          />
+            />
+
         </View>
         <Gap height={20} />
         <View style={styles.inputRow}>
@@ -75,6 +153,18 @@ const SignUp = ({navigation}) => {
             secureTextEntry={true}
           />
         </View>
+        <Gap height={20} />
+        <View style={styles.inputRow}>
+          <Text style={styles.textInput}>Confirm Password</Text>
+          <MaterialCommunityIcons name="shield-lock-outline" color="green" size={20} style={styles.icon} />
+          <TextInput
+            placeholder="089123xx"
+            style={styles.input}
+            onChangeText={setRePassword}
+            value={repassword}
+            secureTextEntry={true}
+          />
+        </View>
 
         <Gap height={20} />
         <View style={styles.inputRow}>
@@ -83,8 +173,8 @@ const SignUp = ({navigation}) => {
           <TextInput
             placeholder="Rm. aunxxx"
             style={styles.input}
-            onChangeText={setNama}
-            value={nama}
+            onChangeText={setName}
+            value={name}
           />
         </View>
 
@@ -98,6 +188,7 @@ const SignUp = ({navigation}) => {
             onChangeText={setAddress}
             value={address}
           />
+           </View>
           <Gap height={20} />
         <View style={styles.inputRow}>
           <Text style={styles.textInput}>Nomor(tlpn/WA)</Text>
@@ -106,13 +197,14 @@ const SignUp = ({navigation}) => {
             placeholder="089123xx"
             style={styles.input}
             onChangeText={setNomor}
-            value={Nomor}
+            value={nomor}
           />
-
-          
-
         </View>
-        </View>
+
+         
+
+
+
         {/* <Gap height={10} />
         <View style={styles.inputRow}>
           <Text style={styles.textInput}>Foto</Text>
@@ -120,7 +212,7 @@ const SignUp = ({navigation}) => {
           <Image source={UploadRegis} style={styles.uploadStyle} />
         </View> */}
         <Gap height={20} />
-        <Button title="Register" color="#F7941D" textColor="white" onPress={handleSignUp} />
+        <Button title="Register" color="#F7941D" textColor="white" onPress={handleCreateAccount} />
       </View>
     </SafeAreaView>
   );
@@ -142,7 +234,7 @@ const styles = StyleSheet.create({
   
   
   inputContainer: {
-    height: '70%',
+    height: '78%',
     width: '95%',
     marginTop:20,
     paddingHorizontal: 10,
@@ -162,7 +254,7 @@ const styles = StyleSheet.create({
   textInput: {
     color:'#fff',
     marginLeft:-10,
-    fontSize: 20,
+    fontSize: 15,
     padding:0,
     fontWeight: 'bold',
     top:5,
@@ -171,11 +263,11 @@ const styles = StyleSheet.create({
   
   input: {
     color:'#FEFF86',
-    fontSize:20,
+    fontSize:15,
     height: 30,
     margin: 0,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor:'grey',
     padding: 0,
     borderTopWidth: 0,
     borderLeftWidth: 0,

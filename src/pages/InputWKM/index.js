@@ -9,54 +9,58 @@ import IconFontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SignIn from '../SignIn';
 
-const HalamanDonasi = ({navigation}) => {
-     const goSignIn = () => {
+const InputWKM = ({navigation}) => {
+     const SignIn = () => {
       navigation.navigate('SignIn');
   } 
-    const [detailJemputan, setDetailJemputan] = useState('');
-    const [jamMasak, setJamMasak] = useState('');
-    const [perkiraanKadarluarsa, setPerkiraanKadarluarsa] = useState('');
-    const [jenisMakanan, setJenisMakanan] = useState('');
-    const [keterangan, setKeterangan] = useState('');
-    const handleSignUp = () => {
+
+  const [keluarga, setKeluarga] = useState('');
+  const [koordinatLat, setKoordinatLat] = useState('');
+  const [koordinatLong, setKoordinatLong] = useState('');
+  const [agama, setAgama] = useState('');
+    
+    const handleCreateAccount = () => {
         // check if input fields are not empty or only spaces
-        if (!detailJemputan.trim() || !jamMasak.trim() || !perkiraanKadarluarsa.trim() || !jenisMakanan.trim() || !keterangan.trim() ) {
+        if (!keluarga.trim() || !koordinatLat.trim() || !koordinatLong.trim() || !agama.trim()) {
           Alert.alert('Empty Input Field', 'Check again, all fields cannot be empty or contain only spaces.');
           return;
         }
         
         // check if email format is valid
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            Alert.alert('Error Message', 'Invalid email format.');
-            return;
-        }
-        if (password !== repassword) {
-            Alert.alert('Student Password', 'Please re-type the same password.');
-            return;
-        }
+        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // if (!emailRegex.test(email)) {
+        //     Alert.alert('Error Message', 'Invalid email format.');
+        //     return;
+        // }
+        // if (password !== repassword) {
+        //     Alert.alert('Student Password', 'Please re-type the same password.');
+        //     return;
+        // }
       
-        if (password !== repassword) {
-            Alert.alert('Student Password', 'Passwords do not match. Please enter the same password in both fields.');
-            return;
-        } 
+        // if (password !== repassword) {
+        //     Alert.alert('Student Password', 'Passwords do not match. Please enter the same password in both fields.');
+        //     return;
+        // } 
           
-        if (password.length < 8 || repassword.length < 8) {
-            Alert.alert('Student Password', 'Password length must be at least 8 characters.');
-            return;
-        }
+        // if (password.length < 8 || repassword.length < 8) {
+        //     Alert.alert('Student Password', 'Password length must be at least 8 characters.');
+        //     return;
+        // }
           
         // create request body with email and password input values
         const requestBody = {
-          'input-detail_jemputan': detailJemputan,
-          'input-jam_masak': jamMasak,
-          'input-perkiraan_kadaluarsa': perkiraanKadarluarsa,
-          'input-jenis_makanan': jenisMakanan,
-          'input-keterangan': keterangan,
+          'input-keluarga': keluarga,
+          'input-koordinatLat': koordinatLat,
+          'input-koordinatLong': koordinatLong,
+          'input-agama': agama,
+          
         };
+    
+
 
         // Time out request data
         const timeoutPromise = new Promise((resolve, reject) => {
@@ -98,15 +102,12 @@ const HalamanDonasi = ({navigation}) => {
             if (textData.includes("SUCCESS")) {
               // message
               Alert.alert('User Account', 'New account of the student was created successfully.');
-              navigation.navigate('SignIn');
               
               // Set empty field
-              setName('');
-              setEmail('');
-              setAddress('');
-              setNomor('');
-              setPassword('');
-              setRePassword('');
+              setKeluarga('');
+              setKoordinat('');
+              setAgama('');
+              
             }
           })
           .catch(error => {
@@ -115,116 +116,99 @@ const HalamanDonasi = ({navigation}) => {
             return;
           });
     }
+
   return (
     <SafeAreaView style={styles.container}>
-    
       {/* <Image source={Backgrounds} style={styles.backgroundImage} /> */}
-      
-      <TouchableOpacity onPress={goSignIn}>
+      <TouchableOpacity onPress={SignIn}>
         <MaterialCommunityIcons name="close-box-outline" color="black" size={30} style={{padding:20, textAlign:'right'}} />
       </TouchableOpacity>
-      <Text style={{left:50,fontSize:23, color:'#F86F03' ,paddingBottom:40}}>Detail Donasi Makanan</Text>
-      
+      <MaterialCommunityIcons name="playlist-plus" color="#F1C376" size={120} style={{alignSelf:'center'}} />
 
       <View style={styles.inputContainer}>
         <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Detail Penjemputan</Text>
-          <Entypo name="location" color="#FFBF9B" size={20} style={styles.icon} />
+          <Text style={styles.textInput}>Keluarga</Text>
+          <MaterialIcons name="family-restroom" color="#F7E6C4" size={20} style={styles.icon} />
           <TextInput
-            placeholder="Depan Rumah Makan"
+            placeholder="Kel. famxx"
             style={styles.input}
-            onChangeText={setDetailJemputan}
-            value={detailJemputan}
+            onChangeText={setKeluarga}
+            value={keluarga}
             caretColor="red"
-          />
+            />
         </View>
+
         <Gap height={20} />
         <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Jam berapa dimasak?</Text>
-          <MaterialCommunityIcons name="timeline-help" color="#FFBF9B" size={20} style={styles.icon} />
+          <Text style={styles.textInput}>KoordinatLat</Text>
+          <MaterialIcons name="my-location" color="#F7E6C4" size={20} style={styles.icon} />
           <TextInput
-            placeholder="12.00 WITA"
+            placeholder="12341.1231.xxx"
             style={styles.input}
-            onChangeText={setJamMasak}
-            value={jamMasak}
+            onChangeText={setKoordinatLat}
+            value={koordinatLat}
+            secureTextEntry={true}
           />
         </View>
 
         <Gap height={20} />
         <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Perkiraan Kadarluasa</Text>
-          <FontAwesome5 name="business-time" color="#FFBF9B" size={20} style={styles.icon} />
+          <Text style={styles.textInput}>KoordinatLong</Text>
+          <MaterialIcons name="my-location" color="#F7E6C4" size={20} style={styles.icon} />
           <TextInput
-            placeholder="20.00 WITA"
+            placeholder="12341.1231.xxx"
             style={styles.input}
-            onChangeText={setPerkiraanKadarluarsa}
-            value={perkiraanKadarluarsa}
+            onChangeText={setKoordinatLong}
+            value={koordinatLong}
+            secureTextEntry={true}
+          />
+        </View>
+
+        <Gap height={20} />
+        <View style={styles.inputRow}>
+          <Text style={styles.textInput}>Agama</Text>
+          <MaterialCommunityIcons name="settings-helper" color="#F7E6C4" size={20} style={styles.icon} />
+          <TextInput
+            placeholder="Muslim, Advent, Kristens"
+            style={styles.input}
+            onChangeText={setAgama}
+            value={agama}
           />
         </View>
 
         <Gap height={20} />
-        <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Jenis Makanan</Text>
-          <MaterialCommunityIcons name="food" color="#FFBF9B" size={20} style={styles.icon} />
-          <TextInput
-            placeholder="nasi, ikan, sayur"
-            style={styles.input}
-            onChangeText={setJenisMakanan}
-            value={jenisMakanan}
-          />
-          <Gap height={20} />
-        <View style={styles.inputRow}>
-          <Text style={styles.textInput}>ket tambahan</Text>
-          <MaterialCommunityIcons name="text-box-plus-outline" color="#FFBF9B" size={20} style={styles.icon} />
-          <TextInput
-            placeholder="saus sudah dicampur"
-            style={styles.input}
-            onChangeText={setKeterangan}
-            value={keterangan}
-          />
-
-          
-
-        </View>
-        </View>
-        {/* <Gap height={10} />
-        <View style={styles.inputRow}>
-          <Text style={styles.textInput}>Foto</Text>
-          <Gap height={5} />
-          <Image source={UploadRegis} style={styles.uploadStyle} />
-        </View> */}
-        <Gap height={20} />
-        <Button title="Confirm" color="#FC6E51" textColor="white" onPress={handleSignUp} />
+        <Button title="Input" color="#F1C376" textColor="white" onPress={handleCreateAccount} />
       </View>
     </SafeAreaView>
   );
 }
 
-export default HalamanDonasi
+export default InputWKM
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'#F6BA6F'
+    backgroundColor:'#FFF4F4',
   },
-  // backgroundImage: {
-  //   position: 'absolute',
-  //   width: '100%',
-  //   height: '100%',
-  //   resizeMode: 'cover',
-  // },
+//   backgroundImage: {
+//     position: 'absolute',
+//     width: '100%',
+//     height: '100%',
+//     resizeMode: 'cover',
+//   },
   
   
   
   inputContainer: {
-    height: '70%',
+    height: '60%',
     width: '95%',
     marginTop:20,
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignSelf: 'center',
     top:-15,
-    backgroundColor:'#7C9070',
+    marginTop:60,
+    backgroundColor:'#606C5D',
     borderRadius: 20,
     shadowColor: 'white',
     shadowOffset: {
@@ -241,8 +225,7 @@ const styles = StyleSheet.create({
     padding:0,
     fontWeight: 'bold',
     top:5,
-    paddingHorizontal:15,
-    
+    paddingHorizontal:15
   },
   
   input: {

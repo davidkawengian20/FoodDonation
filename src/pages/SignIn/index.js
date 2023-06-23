@@ -9,14 +9,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
-import SignUp from '../SignUp';
-import HomeKurir from '../HomeKurir';
+
 
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const goSignIn = () => {
-      navigation.navigate('HomeKurir');
+      navigation.navigate('SignUp');
   } 
   
     // set email and password to empty string on screen focus
@@ -38,6 +37,7 @@ const SignIn = ({navigation}) => {
         Alert.alert('Error Message', 'Input email field cannot be empty or contain only spaces.');
         return;
       }
+
   
       if (!password.trim()) {
         Alert.alert('Error Message', 'Input password field cannot be empty or contain only spaces.');
@@ -71,7 +71,7 @@ const SignIn = ({navigation}) => {
         .then(response => response.text())
         .then(textData => {
           // handle response data
-          console.log(textData);
+          //console.log(textData);
   
           // check if textData contains "ERROR"
           if (textData.includes("ERROR")) {
@@ -87,11 +87,33 @@ const SignIn = ({navigation}) => {
   
             // to json format
             const jsonData = JSON.parse(jsonString);
-            //console.log(jsonData);
-  
+            console.log(jsonData);
+            
+            // tes print role
+            console.log('User Role : '+ jsonData[0].role);
+            
+
             Alert.alert('Login Success', 'Welcome to this attendance system.');
-            // redirect to HomeScreen on successful login and pass textData as parameter
-            navigation.navigate('HomeDonatur', { jsonData });
+
+            // masuk ke halaman Donatur
+            if (jsonData[0].role == 'donatur'){
+              // redirect to HomeScreen on successful login and pass textData as parameter
+              navigation.navigate('HomeDonatur', { jsonData });
+            }
+
+            // Masuk ke halaman Administrator
+            if (jsonData[0].role == 'administrator'){
+              // redirect to HomeScreen on successful login and pass textData as parameter
+              navigation.navigate('HomeAdministrator', { jsonData });
+            }
+
+            // Masuk ke halaman kurir
+            if (jsonData[0].role == 'kurir'){
+              // redirect to HomeScreen on successful login and pass textData as parameter
+              navigation.navigate('HomeKurir', { jsonData });
+            }
+
+            
           }
         })
         .catch(error => {
@@ -103,8 +125,9 @@ const SignIn = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image source={BackgroundSignIn} style={styles.backgroundImage} />
+      
       <View style={styles.inputContainer}>
-        <View style={styles.inputRow}>
+        <View style={styles.inputRow} >
           <Text style={styles.textInput}>Email</Text>
           <MaterialCommunityIcons name="email-outline" color="#FC6E51" size={20} style={styles.icon} />
           <TextInput
@@ -155,14 +178,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  inputContainer: {
-    height: '30%',
-    width: '80%',
-    paddingHorizontal: 10,
-  },
+ inputContainer: {
+  height: '40%',
+  width: '90%',
+  paddingHorizontal: 10,
+  backgroundColor: 'rgba(128, 128, 128, 0.4)', // Warna dasar grey dengan tingkat transparansi 40%
+  marginTop: 50,
+  borderRadius: 10,
+  
+},
+
+
   textInput: {
     fontSize: 17,
-    marginLeft:-15,
+    // marginLeft:-15,
     fontWeight: 'bold',
     paddingTop:15
   },
@@ -188,5 +217,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    
   },
 });

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //  menambahkan async / await syntax pada method fetch yang digunakan untuk mengambil data dari API
 
-class HalamanKurir extends Component {
+class KoordinatWKM extends Component {
     // constructor(props) {
     //     super(props);
 
@@ -73,7 +73,7 @@ class HalamanKurir extends Component {
     
     return (
       <View style={styles.header}>
-        <Text style={styles.headerText}>Donasi Masuk</Text>
+        <Text style={styles.headerText}>Daftar Warga Kurang Makan</Text>
         {/* <TouchableOpacity style={styles.notificationIcon} onPress={()=>this.props.navigation.navigate('HomeScreen', { jsonData: this.state.jsonData })} > */}
             <Icon name="ios-home" size={24} color="white" />
         {/* </TouchableOpacity> */}
@@ -101,47 +101,11 @@ class HalamanKurir extends Component {
           {/* {this.state.jsonClasses.map((item, index) => ( */}
           {/* <TouchableOpacity key={index} style={styles.itemContainer}> */}
             <TouchableOpacity  style={styles.itemContainer}>
-              <View style={styles.itemDetails} >
-                <View style={styles.headerCard} >
-                  <Text style={styles.itemName}>Rm. Pisogr</Text>
-                  <TouchableOpacity style={styles.IconViewClass} >
-                    <MaterialIcons name="location-pin" size={24} color="black" />
-                  </TouchableOpacity>
-                </View>
-                <View style={{borderTopWidth: 1, width: '100%', borderColor: '#f7f0f7'}} />
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Detail Penjemputan</Text>
-                  <Text style={styles.tableCellRight}>Depan Rumah Makan</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Jam berapa dimasak?</Text>
-                  <Text style={styles.tableCellRight}>12.00 WITA</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Perkiraan Kadarluasa (credits)</Text>
-                  <Text style={styles.tableCellRight}>20.00 WITA</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Jenis Makanan</Text>
-                  <Text style={styles.tableCellRight}>nasi, ikan, sayur</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Koordinat Latitude</Text>
-                  <Text style={styles.tableCellRight}>124.9835546603421</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCellLeft}>Koordinat Longitude</Text>
-                  <Text style={styles.tableCellRight}>1.4170496424265122</Text>
-                </View>
-                <View style={styles.tableRow}paddingBottom={12}>
-                  <Text style={styles.tableCellLeft}>ket tambahan</Text>
-                  <Text style={styles.tableCellRight}>saus sudah dicampur</Text>
-                </View>
-                 
+              <View style={styles.itemDetails}>
                  <View style={styles.headerCard} >
                   <Text style={styles.itemName}>Kel. David</Text>
                   <TouchableOpacity style={styles.IconViewClass} >
-                    <MaterialIcons name="location-pin" size={24} color="black" />
+                    <MaterialIcons name="content-copy" size={24} color="black" />
                   </TouchableOpacity>
                 </View>
                   <View style={styles.tableRow}>
@@ -152,11 +116,11 @@ class HalamanKurir extends Component {
                   <Text style={styles.tableCellLeft}>Koordinat Longitude</Text>
                   <Text style={styles.tableCellRight}>124.98343815049607</Text>
                 </View>
-                 <View style={styles.headerCard}backgroundColor=''textAlign='center' paddingTop={20} >
-                  <TouchableOpacity  >
-                    <Text style={styles.itemName} >Check Location</Text>
-                  </TouchableOpacity>
+                <View style={styles.tableRow}>
+                  <Text style={styles.tableCellLeft}>Agama</Text>
+                  <Text style={styles.tableCellRight}>Muslim</Text>
                 </View>
+                 
               </View>
             </TouchableOpacity>
           {/* ))} */}
@@ -192,7 +156,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   header: {
-    backgroundColor: '#176B87',
+    backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -308,4 +272,4 @@ const styles = StyleSheet.create({
     },
 });
     
-    export default HalamanKurir;
+    export default KoordinatWKM;
